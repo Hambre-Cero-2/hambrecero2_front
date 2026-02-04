@@ -1,4 +1,3 @@
-
 package com.example.recipeapp.repository;
 
 import com.example.recipeapp.domain.Recipe;

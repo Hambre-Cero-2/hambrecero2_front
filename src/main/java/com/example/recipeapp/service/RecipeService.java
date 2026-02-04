@@ -77,5 +77,11 @@ public class RecipeService {
         Recipe saved = recipeRepository.save(recipe);
         return modelMapper.map(saved, RecipeOutDto.class);
     }
+    
+    public void delete(Long id) {
+        Recipe recipe = recipeRepository.findById(id)
+            .orElseThrow(() -> new RecipeNotFoundException(id));
 
+            recipeRepository.delete(recipe);
+    }
 }
