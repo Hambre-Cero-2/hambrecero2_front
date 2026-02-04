@@ -24,11 +24,23 @@ public class RecipeService {
         this.ingredientRepository = ingredientRepository;
         this.modelMapper = modelMapper;
     }
+    private RecipeOutDto toOutDto(Recipe recipe) {
+       RecipeOutDto out = modelMapper.map(recipe, RecipeOutDto.class);
 
+            if (recipe.getIngredients() != null) {
+                 out.ingredientIds = recipe.getIngredients()
+                    .stream()
+                    .map(Ingredient::getId)
+                    .toList();
+                }
+
+     return out;
+    }
     public List<RecipeOutDto> findAll() {
         return recipeRepository.findAll()
                 .stream()
-                .map(r -> modelMapper.map(r, RecipeOutDto.class))
+                // .map(r -> modelMapper.map(r, RecipeOutDto.class))
+                .map(this::toOutDto)
                 .toList();
     }
 
@@ -49,12 +61,16 @@ public class RecipeService {
 
         recipe.setIngredients(ingredients);
         Recipe saved = recipeRepository.save(recipe);
-        return modelMapper.map(saved, RecipeOutDto.class);
+        // return modelMapper.map(saved, RecipeOutDto.class);
+        return toOutDto(saved);
+
     }
     public RecipeOutDto findById(Long id) {
             Recipe recipe = recipeRepository.findById(id)
             .orElseThrow(() -> new RecipeNotFoundException(id));
-            return modelMapper.map(recipe, RecipeOutDto.class);
+            // return modelMapper.map(recipe, RecipeOutDto.class);
+            return toOutDto(recipe);
+
     }
     public RecipeOutDto update(Long id, RecipeInDto inDto) {
 
@@ -75,7 +91,8 @@ public class RecipeService {
         recipe.setIngredients(ingredients);
 
         Recipe saved = recipeRepository.save(recipe);
-        return modelMapper.map(saved, RecipeOutDto.class);
+        return toOutDto(saved);
+        // return modelMapper.map(saved, RecipeOutDto.class);
     }
     
     public void delete(Long id) {
