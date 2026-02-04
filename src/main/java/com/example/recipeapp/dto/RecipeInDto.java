@@ -20,7 +20,7 @@ public class RecipeInDto {
     public boolean vegetarian;
 
     @NotNull(message = "Estimated cost cannot be null")
-    @DecimalMin(value = "0,0", message = "Cost must be positive")
+    @DecimalMin(value = "0.0", message = "Cost must be positive")
     public BigDecimal estimatedCost;
 
     @NotNull(message = "Last modified cannot be null")
