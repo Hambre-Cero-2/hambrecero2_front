@@ -4,6 +4,8 @@ import com.example.recipeapp.dto.IngredientInDto;
 import com.example.recipeapp.dto.IngredientOutDto;
 import com.example.recipeapp.service.IngredientService;
 import jakarta.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +31,15 @@ public class IngredientController {
     @GetMapping("/ingredients/{id}")
     public IngredientOutDto getIngredient(@PathVariable Long id) {
     return ingredientService.findById(id);
+    }
+        @PutMapping("/ingredients/{id}")
+    public IngredientOutDto updateIngredient(@PathVariable Long id, @Valid @RequestBody IngredientInDto inDto) {
+        return ingredientService.update(id, inDto);
+    }
+
+    @DeleteMapping("/ingredients/{id}")
+    public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
+        ingredientService.delete(id);
+        return ResponseEntity.noContent().build(); // 204
     }
 }

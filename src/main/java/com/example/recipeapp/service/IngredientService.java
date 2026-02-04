@@ -87,9 +87,11 @@ public class IngredientService {
 
         Ingredient saved = ingredientRepository.save(ingredient);
 
-        IngredientOutDto out = modelMapper.map(saved, IngredientOutDto.class);
-        out.setSeason(saved.getSeason().name());
-        return out;
+         IngredientOutDto out = modelMapper.map(saved, IngredientOutDto.class);
+            if (saved.getSeason() != null) {
+                out.setSeason(saved.getSeason().name());
+            }
+         return out;
     }
     public void delete(Long id) {
         Ingredient ingredient = ingredientRepository.findById(id)
