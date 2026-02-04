@@ -42,26 +42,35 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-        <dependency>
+		<!-- comento hasta que hagamos test ya que tengo puesto mysql -->
+        <!-- <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
-        </dependency>
-		<dependency>
+        </dependency> -->
+		<!-- comento el de mariadb -->
+		<!-- <dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
+		</dependency> -->
+		<dependency>
+  			<groupId>com.mysql</groupId>
+  			<artifactId>mysql-connector-j</artifactId>
+  			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-        <dependency>
+
+		<!-- lo comento porque esta duplicado.. dejo el de true sino lo comentamos mañana -->
+        <!-- <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>org.modelmapper</groupId>
