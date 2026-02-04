@@ -5,10 +5,10 @@ import com.example.recipeapp.service.RecipeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.recipeapp.dto.RecipeInDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -37,5 +37,8 @@ public class RecipeController {
     public RecipeOutDto createRecipe(@Valid @RequestBody RecipeInDto inDto) {
          return recipeService.create(inDto);
     }
-   
+    @PutMapping("/recipes/{id}")
+    public RecipeOutDto updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeInDto inDto) {
+         return recipeService.update(id, inDto);
+    }
 }

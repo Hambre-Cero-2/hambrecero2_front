@@ -56,4 +56,26 @@ public class RecipeService {
             .orElseThrow(() -> new RecipeNotFoundException(id));
             return modelMapper.map(recipe, RecipeOutDto.class);
     }
+    public RecipeOutDto update(Long id, RecipeInDto inDto) {
+
+        Recipe recipe = recipeRepository.findById(id)
+            .orElseThrow(() -> new RecipeNotFoundException(id));
+
+            recipe.setName(inDto.name);
+            recipe.setDifficulty(inDto.difficulty);
+            recipe.setVegetarian(inDto.vegetarian);
+            recipe.setEstimatedCost(inDto.estimatedCost);
+            recipe.setLastModified(inDto.lastModified);
+            recipe.setServings(inDto.servings);
+
+        List<Ingredient> ingredients = ingredientRepository.findAllById(inDto.ingredientIds);
+        if (ingredients.size() != inDto.ingredientIds.size()) {
+            throw new IllegalArgumentException("Some ingredientIds do not exist");
+        }
+        recipe.setIngredients(ingredients);
+
+        Recipe saved = recipeRepository.save(recipe);
+        return modelMapper.map(saved, RecipeOutDto.class);
+    }
+
 }
