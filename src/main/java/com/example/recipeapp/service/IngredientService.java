@@ -39,14 +39,22 @@ public class IngredientService {
         Ingredient saved = ingredientRepository.save(ingredient);
 
         IngredientOutDto out = modelMapper.map(saved, IngredientOutDto.class);
-        out.setSeason(saved.getSeason().name());
+
+        if (saved.getSeason() != null) {
+            out.setSeason(saved.getSeason().name());
+        }
+
         return out;
     }
 
     public List<IngredientOutDto> findAll() {
         return ingredientRepository.findAll().stream().map(i -> {
             IngredientOutDto out = modelMapper.map(i, IngredientOutDto.class);
-            out.setSeason(i.getSeason().name());
+
+            if (i.getSeason() != null) {
+                out.setSeason(i.getSeason().name());
+            }
+
             return out;
         }).toList();
     }
@@ -56,7 +64,38 @@ public class IngredientService {
             .orElseThrow(() -> new IngredientNotFoundException(id));
 
             IngredientOutDto out = modelMapper.map(ingredient, IngredientOutDto.class);
+
+        if (ingredient.getSeason() != null) {
             out.setSeason(ingredient.getSeason().name());
-            return out;
+        }
+
+        return out;
     }
+
+    public IngredientOutDto update(Long id, IngredientInDto inDto) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new IngredientNotFoundException(id));
+
+        ingredient.setName(inDto.name);
+        ingredient.setCalories(inDto.calories);
+        ingredient.setOrganic(inDto.isOrganic);
+        ingredient.setHarvestDate(inDto.harvestDate);
+        ingredient.setPriceKg(inDto.priceKg);
+        ingredient.setCarbonFootprint(inDto.carbonFootprint);
+
+        ingredient.setSeason(Season.valueOf(inDto.season.toUpperCase()));
+
+        Ingredient saved = ingredientRepository.save(ingredient);
+
+        IngredientOutDto out = modelMapper.map(saved, IngredientOutDto.class);
+        out.setSeason(saved.getSeason().name());
+        return out;
+    }
+    public void delete(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new IngredientNotFoundException(id));
+
+        ingredientRepository.delete(ingredient);
+    }
+
 }
