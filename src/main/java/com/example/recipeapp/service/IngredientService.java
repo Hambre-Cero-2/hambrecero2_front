@@ -3,6 +3,7 @@ package com.example.recipeapp.service;
 import com.example.recipeapp.domain.Ingredient;
 import com.example.recipeapp.dto.IngredientInDto;
 import com.example.recipeapp.dto.IngredientOutDto;
+import com.example.recipeapp.exception.IngredientNotFoundException;
 import com.example.recipeapp.repository.IngredientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,14 @@ public class IngredientService {
             out.setSeason(i.getSeason().name());
             return out;
         }).toList();
+    }
+    
+    public IngredientOutDto findById(Long id){
+            Ingredient ingredient = ingredientRepository.findById(id)
+            .orElseThrow(() -> new IngredientNotFoundException(id));
+
+            IngredientOutDto out = modelMapper.map(ingredient, IngredientOutDto.class);
+            out.setSeason(ingredient.getSeason().name());
+            return out;
     }
 }

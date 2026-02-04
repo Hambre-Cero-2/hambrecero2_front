@@ -26,4 +26,8 @@ public class IngredientController {
     public List<IngredientOutDto> getAllIngredients() {
         return ingredientService.findAll();
     }
+    @GetMapping("/ingredients/{id}")
+    public IngredientOutDto getIngredient(@PathVariable Long id) {
+    return ingredientService.findById(id);
+    }
 }
