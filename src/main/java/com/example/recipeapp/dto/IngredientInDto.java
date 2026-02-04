@@ -3,6 +3,7 @@ package com.example.recipeapp.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.DecimalMin;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,8 +25,10 @@ public class IngredientInDto {
     public LocalDate harvestDate;
 
     @NotNull(message = "Price per kg cannot be null")
-    @Min(value = 0, message = "Price per kg must be positive")
+    @DecimalMin(value = "0.0", message = "Price per kg must be positive")
     public BigDecimal priceKg;
 
+    @NotNull(message = "Carbon foot print cannot be null")
+    @DecimalMin(value = "0.0", message = "Carbon foot print must be positive")
     public BigDecimal carbonFootprint;
 }
