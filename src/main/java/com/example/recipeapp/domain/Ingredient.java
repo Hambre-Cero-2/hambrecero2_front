@@ -1,6 +1,6 @@
 package com.example.recipeapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+// import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -35,10 +35,7 @@ public class Ingredient {
     @Column
     @Enumerated(EnumType.ORDINAL)
     private Season season; // spring, summer, outumn, winter
-    enum Season {
-        SPRING, SUMMER, AUTUMN, WINTER
-    }
-
+   
     @Column
     private boolean isOrganic;
 
