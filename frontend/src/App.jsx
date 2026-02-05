@@ -5,6 +5,7 @@ import IngredientList from './pages/IngredientList';
 import IngredientDetail from './pages/IngredientDetail';
 import IngredientCreate from './pages/IngredientCreate';
 import IngredientEdit from './pages/IngredientEdit';
+import RecipeList from './pages/RecipeList';
 
 
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
           <Route path="/ingredients/:id/edit" element={<IngredientEdit />} />
 
           {/* placeholders para no romper */}
-          <Route path="/recipes" element={<div>Recipes page</div>} />
+          <Route path="/recipes" element={<RecipeList />} />
           <Route path="/recipes/:id" element={<div>Recipe detail</div>} />
         </Route>
 
