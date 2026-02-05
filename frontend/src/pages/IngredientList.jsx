@@ -5,8 +5,6 @@ import Loading from '../components/common/Loading';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { Link } from 'react-router-dom';
 
-<Link to="/ingredients/new">+ New ingredient</Link>
-
 export default function IngredientList() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +15,7 @@ export default function IngredientList() {
       try {
         const data = await getIngredients();
         setItems(data);
-      } catch{
+      } catch {
         setError('Could not load ingredients');
       } finally {
         setLoading(false);
@@ -31,7 +29,11 @@ export default function IngredientList() {
 
   return (
     <section>
-      <h2>Ingredients</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Ingredients</h2>
+        <Link to="/ingredients/new">+ New ingredient</Link>
+      </div>
+
       <div style={{ display: 'grid', gap: 12 }}>
         {items.map((i) => (
           <IngredientCard key={i.id} ingredient={i} />
