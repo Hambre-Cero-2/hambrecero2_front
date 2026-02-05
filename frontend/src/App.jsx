@@ -6,6 +6,7 @@ import IngredientDetail from './pages/IngredientDetail';
 import IngredientCreate from './pages/IngredientCreate';
 import IngredientEdit from './pages/IngredientEdit';
 
+
 export default function App() {
   return (
     <BrowserRouter>
