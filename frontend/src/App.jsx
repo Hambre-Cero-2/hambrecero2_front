@@ -5,6 +5,10 @@ import IngredientList from './pages/IngredientList';
 import IngredientDetail from './pages/IngredientDetail';
 import IngredientCreate from './pages/IngredientCreate';
 import IngredientEdit from './pages/IngredientEdit';
+import RecipeList from './pages/RecipeList';
+import RecipeDetail from './pages/RecipeDetail';
+import RecipeCreate from './pages/RecipeCreate';
+import RecipeEdit from './pages/RecipeEdit';
 
 
 export default function App() {
@@ -19,8 +23,10 @@ export default function App() {
           <Route path="/ingredients/:id/edit" element={<IngredientEdit />} />
 
           {/* placeholders para no romper */}
-          <Route path="/recipes" element={<div>Recipes page</div>} />
-          <Route path="/recipes/:id" element={<div>Recipe detail</div>} />
+          <Route path="/recipes" element={<RecipeList />} />
+          <Route path="/recipes/new" element={<RecipeCreate />} />
+          <Route path="/recipes/:id" element={<RecipeDetail />} />
+          <Route path="/recipes/:id/edit" element={<RecipeEdit />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
