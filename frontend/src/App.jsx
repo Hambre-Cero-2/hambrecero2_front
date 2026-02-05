@@ -7,6 +7,7 @@ import IngredientCreate from './pages/IngredientCreate';
 import IngredientEdit from './pages/IngredientEdit';
 import RecipeList from './pages/RecipeList';
 import RecipeDetail from './pages/RecipeDetail';
+import RecipeCreate from './pages/RecipeCreate';
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
 
           {/* placeholders para no romper */}
           <Route path="/recipes" element={<RecipeList />} />
+          <Route path="/recipes/new" element={<RecipeCreate />} />
           <Route path="/recipes/:id" element={<RecipeDetail />} />
         </Route>
 
