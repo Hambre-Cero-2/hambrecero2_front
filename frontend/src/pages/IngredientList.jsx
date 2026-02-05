@@ -3,6 +3,9 @@ import { getIngredients } from '../services/ingredientService';
 import IngredientCard from '../components/ingredient/IngredientCard';
 import Loading from '../components/common/Loading';
 import ErrorMessage from '../components/common/ErrorMessage';
+import { Link } from 'react-router-dom';
+
+<Link to="/ingredients/new">+ New ingredient</Link>
 
 export default function IngredientList() {
   const [items, setItems] = useState([]);
