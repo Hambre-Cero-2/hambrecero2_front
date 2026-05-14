@@ -14,7 +14,7 @@ const loadIngredients = async () => {
 
 const removeIngredient = async (id) => {
   await deleteIngredient(id)
-  loadIngredients()
+  await loadIngredients()
 }
 
 onMounted(loadIngredients)
@@ -28,10 +28,19 @@ onMounted(loadIngredients)
       Add Ingredient
     </RouterLink>
 
-    <div class="card" v-for="ingredient in ingredients" :key="ingredient.id">
+    <div
+      class="card"
+      v-for="ingredient in ingredients"
+      :key="ingredient.id"
+    >
       <h3>{{ ingredient.name }}</h3>
 
-      <p>{{ ingredient.description }}</p>
+      <p><strong>Calories:</strong> {{ ingredient.calories }}</p>
+      <p><strong>Season:</strong> {{ ingredient.season }}</p>
+      <p><strong>Organic:</strong> {{ ingredient.isOrganic ? 'Yes' : 'No' }}</p>
+      <p><strong>Harvest date:</strong> {{ ingredient.harvestDate }}</p>
+      <p><strong>Price/kg:</strong> {{ ingredient.priceKg }} €</p>
+      <p><strong>Carbon footprint:</strong> {{ ingredient.carbonFootPrint }}</p>
 
       <button @click="removeIngredient(ingredient.id)">
         Delete
