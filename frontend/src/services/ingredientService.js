@@ -1,25 +1,11 @@
-import api from './api';
+import api from './api'
 
-export const getIngredients = async () => {
-  const { data } = await api.get('/ingredients');
-  return data;
-};
+export const getIngredients = () => api.get('/ingredients')
 
-export const getIngredientById = async (id) => {
-  const { data } = await api.get(`/ingredients/${id}`);
-  return data;
-};
+export const getIngredientById = (id) => api.get(`/ingredients/${id}`)
 
-export const createIngredient = async (payload) => {
-  const { data } = await api.post('/ingredients', payload);
-  return data;
-};
+export const createIngredient = (ingredient) => api.post('/ingredients', ingredient)
 
-export const updateIngredient = async (id, payload) => {
-  const { data } = await api.put(`/ingredients/${id}`, payload);
-  return data;
-};
+export const updateIngredient = (id, ingredient) => api.put(`/ingredients/${id}`, ingredient)
 
-export const deleteIngredient = async (id) => {
-  await api.delete(`/ingredients/${id}`);
-};
+export const deleteIngredient = (id) => api.delete(`/ingredients/${id}`)
