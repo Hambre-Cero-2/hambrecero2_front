@@ -45,6 +45,10 @@ onMounted(loadIngredients)
       <button @click="removeIngredient(ingredient.id)">
         Delete
       </button>
+
+      <RouterLink class="btn" :to="`/ingredients/${ingredient.id}/edit`">
+        Edit
+      </RouterLink>
     </div>
   </div>
 </template>

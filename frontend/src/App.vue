@@ -1,3 +1,18 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { isLoggedIn, logout } from './services/authService'
+
+const router = useRouter()
+const loggedIn = ref(isLoggedIn())
+
+const doLogout = () => {
+  logout()
+  loggedIn.value = false
+  router.push('/login')
+}
+</script>
+
 <template>
   <div class="app">
     <header class="header">
@@ -7,7 +22,12 @@
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/recipes">Recipes</RouterLink>
         <RouterLink to="/ingredients">Ingredients</RouterLink>
-        <RouterLink to="/dashboard">Dashboard</RouterLink>
+
+        <RouterLink v-if="!loggedIn" to="/login">Login</RouterLink>
+
+        <button v-if="loggedIn" @click="doLogout">
+          Logout
+        </button>
       </nav>
     </header>
 
