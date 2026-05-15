@@ -53,6 +53,20 @@ const getRecipeLastModifiedValue = (recipe) => {
   return recipe.lastModified ?? recipe.last_modified ?? ''
 }
 
+const getRecipeImageValue = (recipe) => {
+  return recipe.imageUrl ?? recipe.imageName ?? ''
+}
+
+const getRecipeImageSrc = (recipe) => {
+  const image = getRecipeImageValue(recipe)
+
+  if (!image) {
+    return ''
+  }
+
+  return image.startsWith('/images/') ? image : `/images/${image}`
+}
+
 onMounted(loadRecipes)
 </script>
 
@@ -104,6 +118,13 @@ onMounted(loadRecipes)
         :key="recipe.id"
         class="card item-card"
       >
+        <img
+          v-if="getRecipeImageSrc(recipe)"
+          :src="getRecipeImageSrc(recipe)"
+          :alt="recipe.name"
+          class="recipe-image"
+        />
+
         <div class="item-card-header">
           <div>
             <h3>{{ recipe.name }}</h3>
@@ -133,7 +154,7 @@ onMounted(loadRecipes)
 
           <div>
             <span>Image</span>
-            <strong>{{ recipe.imageName || '-' }}</strong>
+            <strong>{{ getRecipeImageValue(recipe) || '-' }}</strong>
           </div>
         </div>
 
