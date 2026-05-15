@@ -28,13 +28,11 @@ onMounted(loadRecipes)
     <div class="card" v-for="recipe in recipes" :key="recipe.id">
       <h3>{{ recipe.name }}</h3>
 
-      <p><strong>Difficulty:</strong> {{ recipe.difficult }}</p>
+      <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
       <p><strong>Vegetarian:</strong> {{ recipe.vegetarian ? 'Yes' : 'No' }}</p>
       <p><strong>Estimated cost:</strong> {{ recipe.estimatedCost }} €</p>
       <p><strong>Last modified:</strong> {{ recipe.lastModified }}</p>
       <p><strong>Servings:</strong> {{ recipe.servings }}</p>
-      <p><strong>Ingredient ID:</strong> {{ recipe.ingredientesID }}</p>
-      <p><strong>Image:</strong> {{ recipe.imageName }}</p>
 
       <button @click="removeRecipe(recipe.id)">
         Delete

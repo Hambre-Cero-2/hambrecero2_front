@@ -12,7 +12,7 @@ const ingredient = ref({
   isOrganic: false,
   harvestDate: '',
   priceKg: 0,
-  carbonFootPrint: 0,
+  carbonFootprint: 0,
 })
 
 const saveIngredient = async () => {
@@ -43,10 +43,7 @@ const saveIngredient = async () => {
       </select>
 
       <label>
-        <input
-          v-model="ingredient.isOrganic"
-          type="checkbox"
-        />
+        <input v-model="ingredient.isOrganic" type="checkbox" />
         Organic
       </label>
 
@@ -65,7 +62,7 @@ const saveIngredient = async () => {
       />
 
       <input
-        v-model.number="ingredient.carbonFootPrint"
+        v-model.number="ingredient.carbonFootprint"
         type="number"
         step="0.01"
         placeholder="Carbon footprint"
