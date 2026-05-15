@@ -6,6 +6,7 @@ import RecipeListView from '../views/recipes/RecipeListView.vue'
 import RecipeCreateView from '../views/recipes/RecipeCreateView.vue'
 import IngredientListView from '../views/ingredients/IngredientListView.vue'
 import IngredientCreateView from '../views/ingredients/IngredientCreateView.vue'
+import DashboardView from '../views/dashboard/DashboardView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
@@ -14,6 +15,7 @@ const routes = [
   { path: '/ingredients', component: IngredientListView },
   { path: '/ingredients/new', component: IngredientCreateView },
   { path: '/login', component: LoginView },
+  { path: '/dashboard', component: DashboardView }
 ]
 
 const router = createRouter({
