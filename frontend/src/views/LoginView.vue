@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '../services/authService'
+import { login, saveSession } from '../services/authService'
 
 const router = useRouter()
 
@@ -23,6 +24,15 @@ const handleLogin = async () => {
     window.location.href = '/'
   } catch (err) {
     error.value = 'Invalid username or password'
+const errorMessage = ref('')
+
+const submitLogin = async () => {
+  try {
+    const response = await login(credentials.value)
+    saveSession(response.data)
+    router.push('/')
+  } catch (error) {
+    errorMessage.value = 'Login failed. Check username and password.'
   }
 }
 </script>
@@ -32,6 +42,9 @@ const handleLogin = async () => {
     <h2>Login</h2>
 
     <form @submit.prevent="handleLogin">
+    <h2>Admin Login</h2>
+
+    <form @submit.prevent="submitLogin">
       <input
         v-model="credentials.username"
         placeholder="Username"
@@ -53,5 +66,11 @@ const handleLogin = async () => {
         {{ error }}
       </p>
     </form>
+      <button type="submit">Login</button>
+    </form>
+
+    <p v-if="errorMessage">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>

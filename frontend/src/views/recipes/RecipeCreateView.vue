@@ -12,10 +12,14 @@ const recipe = ref({
   estimatedCost: 0,
   lastModified: '',
   servings: 1,
-  ingredients: [],
+  ingredientIds: [],
+  imageName: '',
 })
 
+const ingredientId = ref(1)
+
 const saveRecipe = async () => {
+  recipe.value.ingredientIds = [ingredientId.value]
   await createRecipe(recipe.value)
   router.push('/recipes')
 }
@@ -59,6 +63,16 @@ const saveRecipe = async () => {
         placeholder="Servings"
         required
       />
+
+      <input
+        v-model.number="ingredientId"
+        type="number"
+        min="1"
+        placeholder="Ingredient ID"
+        required
+      />
+
+      <input v-model="recipe.imageName" placeholder="Image name" />
 
       <button type="submit">Save</button>
     </form>

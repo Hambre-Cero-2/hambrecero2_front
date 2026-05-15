@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { isLoggedIn, logout } from './services/authService'
 
@@ -9,6 +10,11 @@ const loggedIn = ref(isLoggedIn())
 const doLogout = () => {
   logout()
   loggedIn.value = false
+
+const loggedIn = computed(() => isLoggedIn())
+
+const doLogout = () => {
+  logout()
   router.push('/login')
 }
 </script>
@@ -28,6 +34,13 @@ const doLogout = () => {
         <button v-if="loggedIn" @click="doLogout">
           Logout
         </button>
+        <RouterLink v-if="!loggedIn" to="/login">Login</RouterLink>
+        <RouterLink to"/dashboard">Dashboard</RouterLink>
+        
+        <button v-if="loggedIn" @click="doLogout">
+          Logout
+        </button>
+        
       </nav>
     </header>
 
