@@ -13,7 +13,7 @@ import IngredientEditView from '../views/ingredients/IngredientEditView.vue'
 
 import DashboardView from '../views/dashboard/DashboardView.vue'
 
-import { isLoggedIn, getUserRole } from '../services/authService'
+import { getUserRole, isLoggedIn } from '../services/authService'
 
 const routes = [
   {
@@ -24,7 +24,6 @@ const routes = [
     path: '/login',
     component: LoginView,
   },
-
   {
     path: '/recipes',
     component: RecipeListView,
@@ -45,7 +44,6 @@ const routes = [
       role: 'ADMIN',
     },
   },
-
   {
     path: '/ingredients',
     component: IngredientListView,
@@ -66,7 +64,6 @@ const routes = [
       role: 'ADMIN',
     },
   },
-
   {
     path: '/dashboard',
     component: DashboardView,
