@@ -1,11 +1,15 @@
 <script setup>
 import { computed } from 'vue'
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 import { isLoggedIn, logout } from './services/authService'
 
 const router = useRouter()
+const route = useRoute()
 
-const loggedIn = computed(() => isLoggedIn())
+const loggedIn = computed(() => {
+  route.fullPath
+  return isLoggedIn()
+})
 
 const doLogout = () => {
   logout()
@@ -22,9 +26,11 @@ const doLogout = () => {
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/recipes">Recipes</RouterLink>
         <RouterLink to="/ingredients">Ingredients</RouterLink>
+        <RouterLink to="/dashboard">Dashboard</RouterLink>
 
-        <RouterLink v-if="loggedIn" to="/dashboard">Dashboard</RouterLink>
-        <RouterLink v-if="!loggedIn" to="/login">Login</RouterLink>
+        <RouterLink v-if="!loggedIn" to="/login">
+          Login
+        </RouterLink>
 
         <button v-if="loggedIn" type="button" @click="doLogout">
           Logout
