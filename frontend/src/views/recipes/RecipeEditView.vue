@@ -43,21 +43,44 @@ onMounted(loadRecipe)
 
     <form @submit.prevent="saveRecipe">
       <input v-model="recipe.name" placeholder="Recipe name" required />
-
-      <input v-model.number="recipe.difficulty" type="number" min="1" max="5" required />
+      <input
+        v-model.number="recipe.difficulty"
+        type="number"
+        min="1"
+        max="5"
+        placeholder="Difficulty 1-5"
+        required
+      />
 
       <label>
         <input v-model="recipe.vegetarian" type="checkbox" />
         Vegetarian
       </label>
-
-      <input v-model.number="recipe.estimatedCost" type="number" step="0.01" required />
+      <input
+        v-model.number="recipe.estimatedCost"
+        type="number"
+        step="0.01"
+        placeholder="Estimated cost"
+        required
+      />
 
       <input v-model="recipe.lastModified" type="date" required />
 
-      <input v-model.number="recipe.servings" type="number" min="1" required />
+      <input
+        v-model.number="recipe.servings"
+        type="number"
+        min="1"
+        placeholder="Servings"
+        required
+      />
 
-      <input v-model.number="ingredientId" type="number" min="1" required />
+      <input
+        v-model.number="ingredientId"
+        type="number"
+        min="1"
+        placeholder="Ingredient ID"
+        required
+      />
 
       <input v-model="recipe.imageName" placeholder="Image name" />
 

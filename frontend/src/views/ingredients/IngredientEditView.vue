@@ -40,6 +40,12 @@ onMounted(loadIngredient)
       <input v-model="ingredient.name" placeholder="Name" required />
 
       <input v-model.number="ingredient.calories" type="number" placeholder="Calories" required />
+      <input
+        v-model.number="ingredient.calories"
+        type="number"
+        placeholder="Calories"
+        required
+      />
 
       <select v-model="ingredient.season" required>
         <option value="SPRING">Spring</option>
@@ -55,9 +61,21 @@ onMounted(loadIngredient)
 
       <input v-model="ingredient.harvestDate" type="date" required />
 
-      <input v-model.number="ingredient.priceKg" type="number" step="0.01" placeholder="Price per kg" required />
+      <input
+        v-model.number="ingredient.priceKg"
+        type="number"
+        step="0.01"
+        placeholder="Price per kg"
+        required
+      />
 
-      <input v-model.number="ingredient.carbonFootprint" type="number" step="0.01" placeholder="Carbon footprint" required />
+      <input
+        v-model.number="ingredient.carbonFootprint"
+        type="number"
+        step="0.01"
+        placeholder="Carbon footprint"
+        required
+      />
 
       <button type="submit">Save changes</button>
     </form>
