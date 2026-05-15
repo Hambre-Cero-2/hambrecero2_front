@@ -49,6 +49,7 @@ onMounted(loadIngredients)
       <RouterLink class="btn" :to="`/ingredients/${ingredient.id}/edit`">
         Edit
       </RouterLink>
+
     </div>
   </div>
 </template>

@@ -43,7 +43,6 @@ onMounted(loadRecipe)
 
     <form @submit.prevent="saveRecipe">
       <input v-model="recipe.name" placeholder="Recipe name" required />
-
       <input
         v-model.number="recipe.difficulty"
         type="number"
@@ -57,7 +56,6 @@ onMounted(loadRecipe)
         <input v-model="recipe.vegetarian" type="checkbox" />
         Vegetarian
       </label>
-
       <input
         v-model.number="recipe.estimatedCost"
         type="number"

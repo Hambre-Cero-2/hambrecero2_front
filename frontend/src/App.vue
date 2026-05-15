@@ -35,7 +35,7 @@ const doLogout = () => {
           Logout
         </button>
         <RouterLink v-if="!loggedIn" to="/login">Login</RouterLink>
-        <RouterLink to"/dashboard">Dashboard</RouterLink>
+        <RouterLink to="/dashboard">Dashboard</RouterLink>
         
         <button v-if="loggedIn" @click="doLogout">
           Logout

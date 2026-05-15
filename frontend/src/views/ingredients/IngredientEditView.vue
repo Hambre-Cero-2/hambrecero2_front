@@ -39,6 +39,7 @@ onMounted(loadIngredient)
     <form @submit.prevent="saveIngredient">
       <input v-model="ingredient.name" placeholder="Name" required />
 
+      <input v-model.number="ingredient.calories" type="number" placeholder="Calories" required />
       <input
         v-model.number="ingredient.calories"
         type="number"
