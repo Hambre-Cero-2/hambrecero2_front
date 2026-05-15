@@ -7,6 +7,8 @@ import RecipeCreateView from '../views/recipes/RecipeCreateView.vue'
 import IngredientListView from '../views/ingredients/IngredientListView.vue'
 import IngredientCreateView from '../views/ingredients/IngredientCreateView.vue'
 import DashboardView from '../views/dashboard/DashboardView.vue'
+import RecipeEditView from '../views/recipes/RecipeEditView.vue'
+import IngredientEditView from '../views/ingredients/IngredientEditView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
@@ -15,7 +17,9 @@ const routes = [
   { path: '/ingredients', component: IngredientListView },
   { path: '/ingredients/new', component: IngredientCreateView },
   { path: '/login', component: LoginView },
-  { path: '/dashboard', component: DashboardView }
+  { path: '/dashboard', component: DashboardView },
+  { path: '/recipes/:id/edit', component: RecipeEditView },
+  { path: '/ingredients/:id/edit', component: IngredientEditView },
 ]
 
 const router = createRouter({
