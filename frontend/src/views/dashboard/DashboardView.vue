@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { getDashboardData } from '../../services/dashboardService'
 import { getUserRole, getUsername } from '../../services/authService'
 
@@ -56,6 +57,18 @@ const getRecipeLastModifiedValue = (recipe) => {
   return recipe.lastModified ?? recipe.last_modified ?? ''
 }
 
+const getIngredientPriceValue = (ingredient) => {
+  return Number(ingredient.priceKg ?? ingredient.price_kg ?? 0)
+}
+
+const getIngredientCarbonFootprintValue = (ingredient) => {
+  return Number(ingredient.carbonFootprint ?? ingredient.carbon_footprint ?? 0)
+}
+
+const getIngredientHarvestDateValue = (ingredient) => {
+  return ingredient.harvestDate ?? ingredient.harvest_date ?? ''
+}
+
 const filteredRecipes = computed(() => {
   let result = [...recipes.value]
 
@@ -98,8 +111,8 @@ const filteredRecipes = computed(() => {
   }
 
   result.sort((a, b) => {
-    let valueA
-    let valueB
+    let valueA = ''
+    let valueB = ''
 
     if (sortBy.value === 'name') {
       valueA = a.name || ''
@@ -189,7 +202,7 @@ const averageCost = computed(() => {
 
 const totalCarbonFootprint = computed(() => {
   return ingredients.value.reduce(
-    (sum, ingredient) => sum + Number(ingredient.carbonFootprint ?? ingredient.carbon_footprint ?? 0),
+    (sum, ingredient) => sum + getIngredientCarbonFootprintValue(ingredient),
     0
   )
 })
@@ -227,13 +240,32 @@ onMounted(loadDashboard)
 
 <template>
   <section>
-    <h2 v-if="isAdmin">Admin Dashboard</h2>
-    <h2 v-else>User Dashboard</h2>
+    <div class="dashboard-hero">
+      <div>
+        <span class="eyebrow">
+          {{ isAdmin ? 'Admin area' : 'User area' }}
+        </span>
 
-    <p>
-      Welcome, {{ username || 'user' }}.
-      This dashboard shows dynamic information about recipes and sustainable ingredients.
-    </p>
+        <h2>
+          {{ isAdmin ? 'Admin Dashboard' : 'Recipe Dashboard' }}
+        </h2>
+
+        <p>
+          Welcome, {{ username || 'user' }}.
+          Explore recipes, ingredients and sustainability data.
+        </p>
+      </div>
+
+      <div v-if="isAdmin" class="hero-actions">
+        <RouterLink class="btn btn-light" to="/recipes/new">
+          New recipe
+        </RouterLink>
+
+        <RouterLink class="btn btn-secondary" to="/ingredients/new">
+          New ingredient
+        </RouterLink>
+      </div>
+    </div>
 
     <div v-if="loading" class="card">
       Loading dashboard data...
@@ -265,19 +297,30 @@ onMounted(loadDashboard)
           <strong>{{ organicIngredients }}</strong>
         </div>
 
-        <div v-if="isAdmin" class="card summary-card">
+        <div v-if="isAdmin" class="card summary-card admin-card">
           <span class="summary-label">Average recipe cost</span>
           <strong>{{ averageCost.toFixed(2) }} €</strong>
         </div>
 
-        <div v-if="isAdmin" class="card summary-card">
+        <div v-if="isAdmin" class="card summary-card admin-card">
           <span class="summary-label">Total carbon footprint</span>
           <strong>{{ totalCarbonFootprint.toFixed(2) }} kg CO₂</strong>
         </div>
       </div>
 
       <div class="card filters-card">
-        <h3>Explore data</h3>
+        <div class="section-title">
+          <div>
+            <h3>Explore recipes</h3>
+            <p>
+              Search, filter and sort the recipe information.
+            </p>
+          </div>
+
+          <button type="button" class="btn btn-outline" @click="resetFilters">
+            Reset filters
+          </button>
+        </div>
 
         <div class="filters">
           <input
@@ -318,60 +361,82 @@ onMounted(loadDashboard)
             <option value="YES">Organic ingredients</option>
             <option value="NO">Non organic ingredients</option>
           </select>
-
-          <button type="button" @click="resetFilters">
-            Reset filters
-          </button>
         </div>
       </div>
 
-      <div v-if="filteredRecipes.length === 0" class="card">
-        No recipes found with the selected filters.
+      <div class="card">
+        <div class="section-title">
+          <div>
+            <h3>Recipes</h3>
+            <p>
+              {{ filteredRecipes.length }} result(s)
+            </p>
+          </div>
+
+          <RouterLink v-if="isAdmin" class="btn" to="/recipes/new">
+            Add recipe
+          </RouterLink>
+        </div>
+
+        <div v-if="filteredRecipes.length === 0" class="empty-state">
+          No recipes found with the selected filters.
+        </div>
+
+        <table v-else class="dashboard-table">
+          <thead>
+            <tr>
+              <th @click="changeSort('name')">
+                Name{{ getSortIcon('name') }}
+              </th>
+              <th @click="changeSort('difficulty')">
+                Difficulty{{ getSortIcon('difficulty') }}
+              </th>
+              <th>
+                Vegetarian
+              </th>
+              <th @click="changeSort('estimatedCost')">
+                Estimated cost{{ getSortIcon('estimatedCost') }}
+              </th>
+              <th @click="changeSort('servings')">
+                Servings{{ getSortIcon('servings') }}
+              </th>
+              <th @click="changeSort('lastModified')">
+                Last modified{{ getSortIcon('lastModified') }}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              v-for="recipe in filteredRecipes"
+              :key="recipe.id"
+            >
+              <td>{{ recipe.name }}</td>
+              <td>{{ recipe.difficulty }}</td>
+              <td>{{ getRecipeVegetarianValue(recipe) ? 'Yes' : 'No' }}</td>
+              <td>{{ getRecipeCostValue(recipe).toFixed(2) }} €</td>
+              <td>{{ recipe.servings }}</td>
+              <td>{{ getRecipeLastModifiedValue(recipe) }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <table v-else class="dashboard-table">
-        <thead>
-          <tr>
-            <th @click="changeSort('name')">
-              Name{{ getSortIcon('name') }}
-            </th>
-            <th @click="changeSort('difficulty')">
-              Difficulty{{ getSortIcon('difficulty') }}
-            </th>
-            <th>
-              Vegetarian
-            </th>
-            <th @click="changeSort('estimatedCost')">
-              Estimated cost{{ getSortIcon('estimatedCost') }}
-            </th>
-            <th @click="changeSort('servings')">
-              Servings{{ getSortIcon('servings') }}
-            </th>
-            <th @click="changeSort('lastModified')">
-              Last modified{{ getSortIcon('lastModified') }}
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="recipe in filteredRecipes"
-            :key="recipe.id"
-          >
-            <td>{{ recipe.name }}</td>
-            <td>{{ recipe.difficulty }}</td>
-            <td>{{ getRecipeVegetarianValue(recipe) ? 'Yes' : 'No' }}</td>
-            <td>{{ getRecipeCostValue(recipe).toFixed(2) }} €</td>
-            <td>{{ recipe.servings }}</td>
-            <td>{{ getRecipeLastModifiedValue(recipe) }}</td>
-          </tr>
-        </tbody>
-      </table>
-
       <div v-if="isAdmin" class="card admin-section">
-        <h3>Ingredient overview</h3>
+        <div class="section-title">
+          <div>
+            <h3>Ingredient overview</h3>
+            <p>
+              Admin-only ingredient management overview.
+            </p>
+          </div>
 
-        <div v-if="filteredIngredients.length === 0">
+          <RouterLink class="btn" to="/ingredients/new">
+            Add ingredient
+          </RouterLink>
+        </div>
+
+        <div v-if="filteredIngredients.length === 0" class="empty-state">
           No ingredients found with the selected filters.
         </div>
 
@@ -380,6 +445,7 @@ onMounted(loadDashboard)
             <tr>
               <th>Name</th>
               <th>Calories</th>
+              <th>Season</th>
               <th>Organic</th>
               <th>Price/kg</th>
               <th>Carbon footprint</th>
@@ -394,10 +460,11 @@ onMounted(loadDashboard)
             >
               <td>{{ ingredient.name }}</td>
               <td>{{ ingredient.calories }}</td>
+              <td>{{ ingredient.season }}</td>
               <td>{{ getIngredientOrganicValue(ingredient) ? 'Yes' : 'No' }}</td>
-              <td>{{ ingredient.priceKg ?? ingredient.price_kg }} €</td>
-              <td>{{ ingredient.carbonFootprint ?? ingredient.carbon_footprint }} kg CO₂</td>
-              <td>{{ ingredient.harvestDate ?? ingredient.harvest_date }}</td>
+              <td>{{ getIngredientPriceValue(ingredient).toFixed(2) }} €</td>
+              <td>{{ getIngredientCarbonFootprintValue(ingredient).toFixed(2) }} kg CO₂</td>
+              <td>{{ getIngredientHarvestDateValue(ingredient) }}</td>
             </tr>
           </tbody>
         </table>

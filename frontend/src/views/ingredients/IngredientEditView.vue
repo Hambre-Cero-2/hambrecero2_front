@@ -19,65 +19,155 @@ const ingredient = ref({
   carbonFootprint: 0,
 })
 
+const loading = ref(false)
+const saving = ref(false)
+const error = ref('')
+
 const loadIngredient = async () => {
-  const response = await getIngredientById(route.params.id)
-  ingredient.value = response.data
+  loading.value = true
+  error.value = ''
+
+  try {
+    const response = await getIngredientById(route.params.id)
+    ingredient.value = response.data
+  } catch (err) {
+    console.error(err)
+    error.value = 'Could not load ingredient'
+  } finally {
+    loading.value = false
+  }
 }
 
 const saveIngredient = async () => {
-  await updateIngredient(route.params.id, ingredient.value)
-  router.push('/ingredients')
+  saving.value = true
+  error.value = ''
+
+  try {
+    await updateIngredient(route.params.id, ingredient.value)
+    router.push('/ingredients')
+  } catch (err) {
+    console.error(err)
+    error.value = 'Could not update ingredient'
+  } finally {
+    saving.value = false
+  }
 }
 
 onMounted(loadIngredient)
 </script>
 
 <template>
-  <div class="card">
-    <h2>Edit Ingredient</h2>
+  <section>
+    <div class="page-header">
+      <div>
+        <span class="eyebrow">
+          Admin
+        </span>
 
-    <form @submit.prevent="saveIngredient">
-      <input v-model="ingredient.name" placeholder="Name" required />
+        <h2>Edit ingredient</h2>
 
-      <input v-model.number="ingredient.calories" type="number" placeholder="Calories" required />
-      <input
-        v-model.number="ingredient.calories"
-        type="number"
-        placeholder="Calories"
-        required
-      />
+        <p>
+          Update ingredient information.
+        </p>
+      </div>
+    </div>
 
-      <select v-model="ingredient.season" required>
-        <option value="SPRING">Spring</option>
-        <option value="SUMMER">Summer</option>
-        <option value="AUTUMN">Autumn</option>
-        <option value="WINTER">Winter</option>
-      </select>
+    <div v-if="loading" class="card">
+      Loading ingredient...
+    </div>
 
-      <label>
-        <input v-model="ingredient.isOrganic" type="checkbox" />
-        Organic
-      </label>
+    <div v-else class="card form-card">
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
 
-      <input v-model="ingredient.harvestDate" type="date" required />
+      <form @submit.prevent="saveIngredient">
+        <label>
+          Name
+          <input
+            v-model="ingredient.name"
+            placeholder="Name"
+            required
+          />
+        </label>
 
-      <input
-        v-model.number="ingredient.priceKg"
-        type="number"
-        step="0.01"
-        placeholder="Price per kg"
-        required
-      />
+        <label>
+          Calories
+          <input
+            v-model.number="ingredient.calories"
+            type="number"
+            placeholder="Calories"
+            required
+          />
+        </label>
 
-      <input
-        v-model.number="ingredient.carbonFootprint"
-        type="number"
-        step="0.01"
-        placeholder="Carbon footprint"
-        required
-      />
+        <label>
+          Season
+          <select v-model="ingredient.season" required>
+            <option value="SPRING">Spring</option>
+            <option value="SUMMER">Summer</option>
+            <option value="AUTUMN">Autumn</option>
+            <option value="WINTER">Winter</option>
+          </select>
+        </label>
 
-      <button type="submit">Save changes</button>
-    </form>
-  </div>
+        <label class="checkbox-row">
+          <input
+            v-model="ingredient.isOrganic"
+            type="checkbox"
+          />
+          Organic
+        </label>
+
+        <label>
+          Harvest date
+          <input
+            v-model="ingredient.harvestDate"
+            type="date"
+            required
+          />
+        </label>
+
+        <label>
+          Price per kg
+          <input
+            v-model.number="ingredient.priceKg"
+            type="number"
+            step="0.01"
+            placeholder="Price per kg"
+            required
+          />
+        </label>
+
+        <label>
+          Carbon footprint
+          <input
+            v-model.number="ingredient.carbonFootprint"
+            type="number"
+            step="0.01"
+            placeholder="Carbon footprint"
+            required
+          />
+        </label>
+
+        <div class="actions">
+          <button
+            type="submit"
+            class="btn"
+            :disabled="saving"
+          >
+            {{ saving ? 'Saving...' : 'Save changes' }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline"
+            @click="router.push('/ingredients')"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
 </template>
