@@ -399,18 +399,142 @@ label {
   border-radius: 12px;
   margin-bottom: 1rem;
 }
+.recipe-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
 
-@media (max-width: 800px) {
-  .header-content,
-  .page-header,
-  .dashboard-hero,
-  .section-title {
-    flex-direction: column;
-    align-items: flex-start;
+.recipe-summary-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-summary-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  padding: 0;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.recipe-summary-image,
+.recipe-summary-placeholder {
+  width: 100%;
+  height: 210px;
+  display: block;
+}
+
+.recipe-summary-image {
+  object-fit: cover;
+}
+
+.recipe-summary-placeholder {
+  background: #eef4e6;
+  color: #66705f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.recipe-summary-content {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #25301f;
+  }
+}
+
+.recipe-summary-actions {
+  padding: 0 1rem 1rem;
+  margin-top: auto;
+}
+
+.recipe-detail-card {
+  padding: 1.5rem;
+}
+
+.recipe-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 420px) 1fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.recipe-detail-image,
+.recipe-detail-placeholder {
+  width: 100%;
+  min-height: 320px;
+  border-radius: 18px;
+}
+
+.recipe-detail-image {
+  object-fit: cover;
+}
+
+.recipe-detail-placeholder {
+  background: #eef4e6;
+  color: #66705f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.recipe-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h3 {
+    margin: 0;
+    font-size: 2rem;
+  }
+}
+
+.nested-card {
+  background: #f8fbf4;
+  box-shadow: none;
+  margin-bottom: 0;
+
+  h4 {
+    margin: 0 0 0.75rem;
   }
 
-  .dashboard-table {
-    display: block;
-    overflow-x: auto;
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+    color: #66705f;
+  }
+}
+
+@media (max-width: 800px) {
+  .recipe-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .recipe-detail-image,
+  .recipe-detail-placeholder {
+    min-height: 220px;
+  }
+
+  .recipe-summary-content {
+    flex-direction: column;
   }
 }

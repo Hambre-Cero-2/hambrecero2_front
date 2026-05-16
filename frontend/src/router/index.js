@@ -6,6 +6,7 @@ import LoginView from '../views/LoginView.vue'
 import RecipeListView from '../views/recipes/RecipeListView.vue'
 import RecipeCreateView from '../views/recipes/RecipeCreateView.vue'
 import RecipeEditView from '../views/recipes/RecipeEditView.vue'
+import RecipeDetailView from '../views/recipes/RecipeDetailView.vue'
 
 import IngredientListView from '../views/ingredients/IngredientListView.vue'
 import IngredientCreateView from '../views/ingredients/IngredientCreateView.vue'
@@ -27,6 +28,9 @@ const routes = [
   {
     path: '/recipes',
     component: RecipeListView,
+  },
+  {  path: '/recipes/:id',
+  component: RecipeDetailView,
   },
   {
     path: '/recipes/new',
