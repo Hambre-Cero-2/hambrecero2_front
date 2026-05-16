@@ -523,7 +523,84 @@ label {
     color: #66705f;
   }
 }
+.ingredient-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
 
+.ingredient-summary-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ingredient-summary-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  padding: 0;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+.ingredient-summary-icon {
+  min-height: 150px;
+  background: #eef4e6;
+  color: #49651b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 900;
+}
+
+.ingredient-summary-content {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #25301f;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    color: #66705f;
+  }
+}
+
+.ingredient-summary-actions {
+  padding: 0 1rem 1rem;
+  margin-top: auto;
+}
+
+.ingredient-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  h3 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    color: #66705f;
+  }
+}
+
+.ingredient-detail-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
 @media (max-width: 800px) {
   .recipe-detail-layout {
     grid-template-columns: 1fr;
