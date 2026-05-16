@@ -45,16 +45,8 @@ const getRecipeVegetarianValue = (recipe) => {
   return recipe.vegetarian ?? recipe.isVegetarian ?? false
 }
 
-const getRecipeCostValue = (recipe) => {
-  return Number(recipe.estimatedCost ?? recipe.estimated_cost ?? 0)
-}
-
-const getRecipeLastModifiedValue = (recipe) => {
-  return recipe.lastModified ?? recipe.last_modified ?? ''
-}
-
 const getRecipeImageValue = (recipe) => {
-  return recipe.imageUrl ?? recipe.imageName ?? ''
+  return recipe.imageName ?? recipe.imageUrl ?? ''
 }
 
 const getRecipeImageSrc = (recipe) => {
@@ -64,7 +56,15 @@ const getRecipeImageSrc = (recipe) => {
     return ''
   }
 
-  return image.startsWith('/images/') ? image : `/images/${image}`
+  if (image.startsWith('http')) {
+    return image
+  }
+
+  if (image.startsWith('/images/')) {
+    return image
+  }
+
+  return `/images/${image}`
 }
 
 onMounted(loadRecipes)
@@ -81,7 +81,7 @@ onMounted(loadRecipes)
         <h2>Recipe catalogue</h2>
 
         <p>
-          Browse all available recipes.
+          Browse recipes and open each one to see the full information.
           <span v-if="isAdmin">
             As admin, you can create, edit and delete recipes.
           </span>
@@ -112,54 +112,52 @@ onMounted(loadRecipes)
       No recipes found.
     </div>
 
-    <div v-else class="grid-list">
+    <div v-else class="recipe-card-grid">
       <article
         v-for="recipe in recipes"
         :key="recipe.id"
-        class="card item-card"
+        class="card recipe-summary-card"
       >
-        <img
-          v-if="getRecipeImageSrc(recipe)"
-          :src="getRecipeImageSrc(recipe)"
-          :alt="recipe.name"
-          class="recipe-image"
-        />
+        <RouterLink
+          class="recipe-summary-link"
+          :to="`/recipes/${recipe.id}`"
+        >
+          <img
+            v-if="getRecipeImageSrc(recipe)"
+            :src="getRecipeImageSrc(recipe)"
+            :alt="recipe.name"
+            class="recipe-summary-image"
+          />
 
-        <div class="item-card-header">
-          <div>
-            <h3>{{ recipe.name }}</h3>
-            <p>
-              Difficulty {{ recipe.difficulty }} · {{ recipe.servings }} serving(s)
-            </p>
-          </div>
-
-          <span
-            class="badge"
-            :class="{ 'badge-success': getRecipeVegetarianValue(recipe) }"
+          <div
+            v-else
+            class="recipe-summary-placeholder"
           >
-            {{ getRecipeVegetarianValue(recipe) ? 'Vegetarian' : 'Non vegetarian' }}
-          </span>
-        </div>
-
-        <div class="details-grid">
-          <div>
-            <span>Estimated cost</span>
-            <strong>{{ getRecipeCostValue(recipe).toFixed(2) }} €</strong>
+            No image
           </div>
 
-          <div>
-            <span>Last modified</span>
-            <strong>{{ getRecipeLastModifiedValue(recipe) || '-' }}</strong>
-          </div>
+          <div class="recipe-summary-content">
+            <h3>{{ recipe.name }}</h3>
 
-          <div>
-            <span>Image</span>
-            <strong>{{ getRecipeImageValue(recipe) || '-' }}</strong>
+            <span
+              class="badge"
+              :class="{ 'badge-success': getRecipeVegetarianValue(recipe) }"
+            >
+              {{ getRecipeVegetarianValue(recipe) ? 'Vegetarian' : 'Non vegetarian' }}
+            </span>
           </div>
-        </div>
+        </RouterLink>
 
-        <div v-if="isAdmin" class="actions">
+        <div class="actions recipe-summary-actions">
           <RouterLink
+            class="btn btn-outline"
+            :to="`/recipes/${recipe.id}`"
+          >
+            View detail
+          </RouterLink>
+
+          <RouterLink
+            v-if="isAdmin"
             class="btn"
             :to="`/recipes/${recipe.id}/edit`"
           >
@@ -167,6 +165,7 @@ onMounted(loadRecipes)
           </RouterLink>
 
           <button
+            v-if="isAdmin"
             type="button"
             class="btn btn-danger"
             @click="removeRecipe(recipe.id)"

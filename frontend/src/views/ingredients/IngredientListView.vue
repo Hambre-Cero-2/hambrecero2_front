@@ -48,18 +48,6 @@ const getIngredientOrganicValue = (ingredient) => {
   return ingredient.organic ?? ingredient.isOrganic ?? false
 }
 
-const getIngredientPriceValue = (ingredient) => {
-  return Number(ingredient.priceKg ?? ingredient.price_kg ?? 0)
-}
-
-const getIngredientCarbonFootprintValue = (ingredient) => {
-  return Number(ingredient.carbonFootprint ?? ingredient.carbon_footprint ?? 0)
-}
-
-const getIngredientHarvestDateValue = (ingredient) => {
-  return ingredient.harvestDate ?? ingredient.harvest_date ?? ''
-}
-
 onMounted(loadIngredients)
 </script>
 
@@ -74,7 +62,7 @@ onMounted(loadIngredients)
         <h2>Ingredient catalogue</h2>
 
         <p>
-          Browse ingredient information.
+          Browse ingredients and open each one to see the full information.
           <span v-if="isAdmin">
             As admin, you can create, edit and delete ingredients.
           </span>
@@ -105,50 +93,45 @@ onMounted(loadIngredients)
       No ingredients found.
     </div>
 
-    <div v-else class="grid-list">
+    <div v-else class="ingredient-card-grid">
       <article
         v-for="ingredient in ingredients"
         :key="ingredient.id"
-        class="card item-card"
+        class="card ingredient-summary-card"
       >
-        <div class="item-card-header">
-          <div>
-            <h3>{{ ingredient.name }}</h3>
-            <p>{{ ingredient.season }}</p>
+        <RouterLink
+          class="ingredient-summary-link"
+          :to="`/ingredients/${ingredient.id}`"
+        >
+          <div class="ingredient-summary-icon">
+            {{ ingredient.name?.charAt(0)?.toUpperCase() || '?' }}
           </div>
 
-          <span
-            class="badge"
-            :class="{ 'badge-success': getIngredientOrganicValue(ingredient) }"
-          >
-            {{ getIngredientOrganicValue(ingredient) ? 'Organic' : 'Non organic' }}
-          </span>
-        </div>
+          <div class="ingredient-summary-content">
+            <div>
+              <h3>{{ ingredient.name }}</h3>
+              <p>{{ ingredient.season || 'No season' }}</p>
+            </div>
 
-        <div class="details-grid">
-          <div>
-            <span>Calories</span>
-            <strong>{{ ingredient.calories }}</strong>
+            <span
+              class="badge"
+              :class="{ 'badge-success': getIngredientOrganicValue(ingredient) }"
+            >
+              {{ getIngredientOrganicValue(ingredient) ? 'Organic' : 'Non organic' }}
+            </span>
           </div>
+        </RouterLink>
 
-          <div>
-            <span>Price/kg</span>
-            <strong>{{ getIngredientPriceValue(ingredient).toFixed(2) }} €</strong>
-          </div>
-
-          <div>
-            <span>Carbon footprint</span>
-            <strong>{{ getIngredientCarbonFootprintValue(ingredient).toFixed(2) }} kg CO₂</strong>
-          </div>
-
-          <div>
-            <span>Harvest date</span>
-            <strong>{{ getIngredientHarvestDateValue(ingredient) || '-' }}</strong>
-          </div>
-        </div>
-
-        <div v-if="isAdmin" class="actions">
+        <div class="actions ingredient-summary-actions">
           <RouterLink
+            class="btn btn-outline"
+            :to="`/ingredients/${ingredient.id}`"
+          >
+            View detail
+          </RouterLink>
+
+          <RouterLink
+            v-if="isAdmin"
             class="btn"
             :to="`/ingredients/${ingredient.id}/edit`"
           >
@@ -156,6 +139,7 @@ onMounted(loadIngredients)
           </RouterLink>
 
           <button
+            v-if="isAdmin"
             type="button"
             class="btn btn-danger"
             @click="removeIngredient(ingredient.id)"
